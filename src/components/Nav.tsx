@@ -5,8 +5,10 @@
 //
 // - Položky menu se berou z data/site.ts (pole `menu`).
 // - Aktivní stránka má pod sebou jantarovou čáru (podle aktuální adresy).
-// - Pod 900 px šířky se odkazy schovají a ukáže se tlačítko ☰,
+// - Odkazy jsou vidět od 640 px šířky (i v užším okně nebo artifactu vedle chatu).
+//   Pod 640 px (mobil, velké přiblížení) se schovají a ukáže se tlačítko ☰,
 //   které rozbalí mobilní menu (stav `open`).
+// - Tlačítko „Domluvit schůzku“ a podtitul u loga jsou v menu až od 1024 px, aby se vše vešlo.
 // =========================================================
 
 import Link from 'next/link'
@@ -32,12 +34,12 @@ export function Nav() {
           </span>
           <span className="flex flex-col">
             <span className="display text-[22px] leading-none">{site.jmeno}</span>
-            <span className="pt-1 text-[13px] text-mech">{site.podtitul}</span>
+            <span className="pt-1 text-[13px] text-mech sm:hidden lg:block">{site.podtitul}</span>
           </span>
         </Link>
 
         {/* Odkazy – jen na širších obrazovkách */}
-        <div className="hidden items-center gap-7 text-[15px] min-[900px]:flex">
+        <div className="hidden items-center gap-5 text-[15px] sm:flex lg:gap-7">
           {menu.map((item) => (
             <Link
               key={item.href}
@@ -54,7 +56,7 @@ export function Nav() {
 
         <Link
           href="/kontakt#formular"
-          className="hidden rounded-full bg-jantar px-5 py-2.5 text-[15px] font-semibold text-les transition-colors hover:bg-[#ebb955] min-[900px]:inline-block"
+          className="hidden rounded-full bg-jantar px-5 py-2.5 text-[15px] font-semibold text-les transition-colors hover:bg-[#ebb955] lg:inline-block"
         >
           Domluvit schůzku
         </Link>
@@ -66,7 +68,7 @@ export function Nav() {
           aria-expanded={open}
           aria-controls="mobilni-menu"
           aria-label={open ? 'Zavřít menu' : 'Otevřít menu'}
-          className="flex h-11 w-11 items-center justify-center rounded-full border border-les-cara text-krida min-[900px]:hidden"
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-les-cara text-krida sm:hidden"
         >
           <Icon name={open ? 'close' : 'menu'} className="h-5 w-5" strokeWidth={2} />
         </button>
@@ -74,7 +76,7 @@ export function Nav() {
 
       {/* Rozbalené mobilní menu */}
       {open && (
-        <div id="mobilni-menu" className="objev -mx-5 flex flex-col border-t border-les-cara px-5 pb-7 pt-3 min-[900px]:hidden" style={{ animationDuration: '0.25s' }}>
+        <div id="mobilni-menu" className="objev -mx-5 flex flex-col border-t border-les-cara px-5 pb-7 pt-3 sm:hidden" style={{ animationDuration: '0.25s' }}>
           {menu.map((item) => (
             <Link
               key={item.href}
