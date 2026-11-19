@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+/* =========================================================
+   BARVY WEBU
+   Každá barva tady vytvoří Tailwind třídy, např.
+   --color-les  →  bg-les, text-les, border-les
+   Když změníte hodnotu tady, změní se na celém webu.
+   ========================================================= */
+@theme {
+  --color-les: #16372c;          /* hlavní tmavě zelená (hřiště večer) */
+  --color-les-svetly: #1f4638;   /* panely na zeleném pozadí */
+  --color-les-cara: #2f5848;     /* čáry na zeleném pozadí */
+  --color-les-tmavy: #0e2620;    /* patička */
+  --color-krida: #f2f4ef;        /* pozadí stránky (křída) */
+  --color-salvej: #dfe6dc;       /* šalvějové panely */
+  --color-linka: #cfd8cc;        /* jemné linky na světlém */
+  --color-jantar: #e0a738;       /* akcent: tlačítka a detaily na zeleném */
+  --color-jantar-tmavy: #8b5e12; /* akcent pro text na světlém pozadí */
+  --color-inkoust: #15201b;      /* hlavní text */
+  --color-kamen: #4a5852;        /* vedlejší text na světlém */
+  --color-mech: #b9c8bf;         /* vedlejší text na zeleném */
+}
+
+/* Písmo Archivo (balíček @fontsource-variable/archivo, načtený v layout.tsx).
+   Jedna rodina ve dvou šířkách: běžný text normálně, nadpisy zúženě (třída .display). */
+@theme inline {
+  --font-sans: 'Archivo Variable', system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth; /* plynulé posouvání na kotvy (#formular apod.) */
+}
+
+body {
+  background: var(--color-krida);
+  color: var(--color-inkoust);
+  font-variant-numeric: lining-nums;
+}
+
+/* Nadpisy: zúžené a tučné, jako čísla na dresu nebo výsledková tabule */
+.display {
+  font-stretch: 74%;
+  font-weight: 760;
+  letter-spacing: -0.005em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+/* Viditelné zvýraznění při ovládání klávesnicí */
+:focus-visible {
+  outline: 2px solid var(--color-jantar);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   JEDINÁ AUTOMATICKÁ ANIMACE: v úvodu se „křídou“ nakreslí
+   čáry hřiště za fotkou (components/HristeCary.tsx).
+   ========================================================= */
+@keyframes kresli {
+  from { stroke-dashoffset: var(--delka); }
+  to   { stroke-dashoffset: 0; }
+}
+.cara {
+  stroke-dasharray: var(--delka);
+  stroke-dashoffset: var(--delka);
+  animation: kresli 1.8s cubic-bezier(0.6, 0.1, 0.2, 1) forwards;
+  animation-delay: var(--zpozdeni, 0ms);
+}
+
+@keyframes objev {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.objev {
+  animation: objev 1s ease-out both;
+  animation-delay: var(--zpozdeni, 0ms);
+}
+
+/* Lidé, kteří mají v systému vypnuté animace, je neuvidí */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .cara { animation: none; stroke-dashoffset: 0; }
+  .objev { animation: none; }
+}
+
+/* Jezdce v kalkulačce v jantarové barvě */
+input[type="range"] {
+  accent-color: var(--color-jantar);
+}
